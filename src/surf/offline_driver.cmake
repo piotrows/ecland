@@ -26,6 +26,7 @@ list(APPEND offline_driver_src
     cnt41s.F90
     cntend.F90
     cpg1s.F90
+    cpg1s_layer.F90
     dattim.F90
     dtforc.F90
 #    ibm.F90 # Already included in surf
@@ -116,6 +117,7 @@ list(APPEND offline_driver_src
     yomlog1s.F90
     yomlun1s.F90
     yomrip.F90
+    callpar1s_layer.F90
 )
 list(TRANSFORM offline_driver_src PREPEND offline/driver/)
 
