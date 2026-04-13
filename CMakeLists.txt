@@ -63,11 +63,21 @@ ecbuild_add_option( FEATURE IFSBENCH_TESTS
 
 if( HAVE_SINGLE_PRECISION )
   add_library( parkind ALIAS parkind_sp )
+  add_library( field_api_prec ALIAS field_api_sp )
   set( prec "sp" )
 else()
   add_library( parkind ALIAS parkind_dp )
+  add_library( field_api_prec ALIAS field_api_dp )
   set( prec "dp" )
 endif()
+
+# Compute field_api Fortran module directories explicitly, since the umbrella
+# 'field_api' CMake target does not export precision-specific module subdirs.
+get_filename_component( FIELD_API_ROOT "${field_api_DIR}/../../../" ABSOLUTE )
+set( FIELD_API_MODULE_DIRS
+  "${FIELD_API_ROOT}/include/field_api_${prec}"
+  "${FIELD_API_ROOT}/include/field_api_factory"
+)
 
 unset( OpenMP_Fortran_LIBRARIES )
 if( HAVE_OMP )
