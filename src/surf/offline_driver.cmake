@@ -138,7 +138,7 @@ ecbuild_add_executable(TARGET ${PROJECT_NAME}-master
   LIBS 
     ${PROJECT_NAME}_offline_driver_intfb ${PROJECT_NAME}_surf ${PROJECT_NAME}_cmflood
     fiat parkind
-    field_api
+    field_api_prec
     ${OpenMP_Fortran_LIBRARIES}
     NetCDF::NetCDF_Fortran
 )
@@ -146,3 +146,6 @@ ecbuild_target_fortran_module_directory(
     TARGET ${PROJECT_NAME}-master
     MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/module/offline_driver
 )
+# field_api installs .mod files in precision-specific include subdirectories;
+# add them explicitly in case the CMake targets do not propagate them.
+#target_include_directories(${PROJECT_NAME}-master PRIVATE ${FIELD_API_MODULE_DIRS})

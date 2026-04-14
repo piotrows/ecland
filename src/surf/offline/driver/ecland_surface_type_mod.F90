@@ -7,7 +7,6 @@ MODULE ECLAND_SURFACE_TYPE_MOD
 ! granted to it by virtue of its status as an intergovernmental organisation
 ! nor does it submit to any jurisdiction.
 USE PARKIND1,                  ONLY : JPIM, JPRB
-USE YOMGP1S0 ,                 ONLY : WREN
 USE YOMGF1S  ,                 ONLY : FSSRD, FSTRD
 USE YOMCDH1S ,                 ONLY : NLEVI  , &
      &  NDHVTLS,NDHFTLS,NDHVTSS,NDHFTSS, &
