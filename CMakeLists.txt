@@ -73,11 +73,11 @@ endif()
 
 # Compute field_api Fortran module directories explicitly, since the umbrella
 # 'field_api' CMake target does not export precision-specific module subdirs.
-get_filename_component( FIELD_API_ROOT "${field_api_DIR}/../../../" ABSOLUTE )
-set( FIELD_API_MODULE_DIRS
-  "${FIELD_API_ROOT}/include/field_api_${prec}"
-  "${FIELD_API_ROOT}/include/field_api_factory"
-)
+#get_filename_component( FIELD_API_ROOT "${field_api_DIR}/../../../" ABSOLUTE )
+#set( FIELD_API_MODULE_DIRS
+#  "${FIELD_API_ROOT}/include/field_api_${prec}"
+#  "${FIELD_API_ROOT}/include/field_api_factory"
+#)
 
 unset( OpenMP_Fortran_LIBRARIES )
 if( HAVE_OMP )
