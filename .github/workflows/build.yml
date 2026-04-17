@@ -47,6 +47,7 @@ jobs:
             compiler_cc: gcc-14
             compiler_cxx: g++-14
             compiler_fc: gfortran-14
+            fortran_flags: ""
             caching: true
 
           - name: linux nvhpc-25.9
@@ -70,6 +71,7 @@ jobs:
             compiler_cc: icc
             compiler_cxx: icpc
             compiler_fc: ifort
+            fortran_flags: '-DCMAKE_Fortran_FLAGS=-check noarg_temp_created'
             caching: true
 
           - name : linux intel-modern
@@ -78,6 +80,7 @@ jobs:
             compiler_cc: icx
             compiler_cxx: icpx
             compiler_fc: ifx
+            fortran_flags: ""
             caching: true
             ctest_options: |
                --test-command "bash -c 'ulimit -s unlimited && ctest -VV --output-on-failure'"
@@ -89,6 +92,7 @@ jobs:
             compiler_cc: ~
             compiler_cxx: ~
             compiler_fc: gfortran-15
+            fortran_flags: ""
             caching: true
 
           - name: linux flang-20
@@ -98,6 +102,7 @@ jobs:
             compiler_cxx: clang++-20
             compiler_fc: flang-20
             caching: true
+            fortran_flags: ""
             openmpi_version: 5.0.7
 
     runs-on: ${{ matrix.os }}
