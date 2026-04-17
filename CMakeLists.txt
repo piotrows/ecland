@@ -10,10 +10,7 @@ cmake_minimum_required( VERSION 3.24 FATAL_ERROR )
 
 include(FetchContent)
 
-find_package( ecbuild 3.11 QUIET HINTS ${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../ecbuild )
-if( NOT ecbuild_FOUND )
-  include(cmake/ecland_fetchcontent_ecbuild.cmake)
-endif()
+find_package( ecbuild 3.11 QUIET HINTS ${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../ecbuild REQUIRED )
 
 if( NOT ECLAND_PROJECT_NAME )
   set( ECLAND_PROJECT_NAME ecland )
@@ -26,8 +23,6 @@ ecbuild_enable_fortran( REQUIRED NO_MODULE_DIRECTORY )
 
 ### Dependencies
 ########################################################################
-ecland_fetchcontent_dependencies()
-
 ecbuild_find_package( NetCDF COMPONENTS Fortran REQUIRED )
 
 #### eccodes
@@ -39,6 +34,9 @@ endif()
 #### fiat
 ecbuild_find_package(fiat REQUIRED)
 set( HAVE_MPI ${fiat_HAVE_MPI} )
+
+#### field_api
+ecbuild_find_package(field_api REQUIRED)
 
 ### Options
 ########################################################################
@@ -60,9 +58,11 @@ ecbuild_add_option( FEATURE IFSBENCH_TESTS
 
 if( HAVE_SINGLE_PRECISION )
   add_library( parkind ALIAS parkind_sp )
+  add_library( field_api_prec ALIAS field_api_sp )
   set( prec "sp" )
 else()
   add_library( parkind ALIAS parkind_dp )
+  add_library( field_api_prec ALIAS field_api_dp )
   set( prec "dp" )
 endif()
 
