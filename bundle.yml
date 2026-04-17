@@ -12,7 +12,7 @@ projects :
 
     - ecbuild :
         git     : https://github.com/ecmwf/ecbuild
-        version : develop
+        version : 3.13.2
         bundle  : false
 
     - eccodes :
