@@ -33,7 +33,7 @@ jobs:
         prec: ['DP', 'SP'] # Standalone driver not 'SP' compatible yet
         name:
           - linux gnu-14
-          - linux nvhpc-24.5
+          - linux nvhpc-25.9
           - linux intel-classic
           - linux intel-modern
           - macos
@@ -49,9 +49,9 @@ jobs:
             compiler_fc: gfortran-14
             caching: true
 
-          - name: linux nvhpc-24.5
+          - name: linux nvhpc-25.9
             os: ubuntu-24.04
-            compiler: nvhpc-24.5
+            compiler: nvhpc-25.9
             compiler_cc: nvc
             compiler_cxx: nvc++
             compiler_fc: nvfortran
@@ -168,7 +168,7 @@ jobs:
       if: contains( matrix.compiler, 'nvhpc' )
       shell: bash -eux {0}
       run: |
-        ${ECLAND_TOOLS}/install-nvhpc.sh --prefix /opt/nvhpc --version 24.5
+        ${ECLAND_TOOLS}/install-nvhpc.sh --prefix /opt/nvhpc --version 25.9
         source /opt/nvhpc/env.sh
         echo "${NVHPC_DIR}/compilers/bin"                   >> $GITHUB_PATH
         [ -z ${MPI_HOME+x} ] || echo "MPI_HOME=${MPI_HOME}" >> $GITHUB_ENV
