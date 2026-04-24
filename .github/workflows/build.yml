@@ -267,7 +267,7 @@ jobs:
         save_cache: false
         self_coverage: false
         force_build: true
-        cache_suffix: "${{ matrix.build_type }}-${{matrix.prec}}-${{ env.CACHE_SUFFIX }}"
+        cache_suffix: "${{ matrix.compiler }}-${{ matrix.build_type }}-${{matrix.prec}}-${{ env.CACHE_SUFFIX }}"
         recreate_cache: ${{ !matrix.caching }}
         dependencies: |
           ecmwf/ecbuild@develop
