@@ -66,7 +66,7 @@ jobs:
             compiler_cc: icc
             compiler_cxx: icpc
             compiler_fc: ifort
-            fortran_flags: '-DCMAKE_Fortran_FLAGS="-check noarg_temp_created"'
+            fortran_flags: ""
             caching: true
 
           - name : linux intel-modern
@@ -253,6 +253,10 @@ jobs:
           ${ECLAND_TOOLS}/install-netcdf-fortran.sh --prefix ${{ env.DEPS_DIR }}/netcdf --netcdf-root ${NETCDF_ROOT} --version 4.6.2
         fi
 
+    - name: Set Intel Classic Fortran compiler flags
+      if: contains(matrix.compiler, 'intel-classic')
+      run: echo "FC_FLAGS_CMAKE=-C ${{ github.workspace }}/.github/cmake-flags-intel-classic.cmake" >> $GITHUB_ENV
+
     - name: Build with CMake
       id: buildcmake
       env: 
@@ -293,13 +297,13 @@ jobs:
           -DENABLE_MPI=ON
           -DENABLE_SINGLE_PRECISION=${{ matrix.prec == 'SP' && 'ON' || 'OFF' }}
           -DENABLE_DOUBLE_PRECISION=${{ matrix.prec == 'DP' && 'ON' || 'OFF' }}
-          ${{ matrix.fortran_flags }}
+          ${{ env.FC_FLAGS_CMAKE }}
 
         cmake_options: >-
           -G Ninja
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -DENABLE_SINGLE_PRECISION=${{ matrix.prec == 'SP' && 'ON' || 'OFF' }}
-          ${{ matrix.fortran_flags}}
+          ${{ env.FC_FLAGS_CMAKE }}
           ${{ matrix.cmake_options }}
 
         self_build: true
