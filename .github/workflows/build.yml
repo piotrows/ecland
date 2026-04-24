@@ -47,7 +47,6 @@ jobs:
             compiler_cc: gcc-14
             compiler_cxx: g++-14
             compiler_fc: gfortran-14
-            fortran_flags: ""
             caching: true
 
           - name: linux nvhpc-25.9
@@ -57,7 +56,6 @@ jobs:
             compiler_cxx: nvc++
             compiler_fc: nvfortran
             cmake_options: -DCMAKE_CXX_FLAGS=--diag_suppress177
-            fortran_flags: ""
             caching: true
 
           - name : linux intel-classic
@@ -66,7 +64,6 @@ jobs:
             compiler_cc: icc
             compiler_cxx: icpc
             compiler_fc: ifort
-            fortran_flags: '-DCMAKE_Fortran_FLAGS=-check noarg_temp_created'
             caching: true
 
           - name : linux intel-modern
@@ -75,7 +72,6 @@ jobs:
             compiler_cc: icx
             compiler_cxx: icpx
             compiler_fc: ifx
-            fortran_flags: ""
             caching: true
             ctest_options: |
                --test-command "bash -c 'ulimit -s unlimited && ctest -VV --output-on-failure'"
@@ -87,7 +83,6 @@ jobs:
             compiler_cc: ~
             compiler_cxx: ~
             compiler_fc: gfortran-15
-            fortran_flags: ""
             caching: true
 
           - name: linux flang-20
@@ -97,7 +92,6 @@ jobs:
             compiler_cxx: clang++-20
             compiler_fc: flang-20
             caching: true
-            fortran_flags: ""
             openmpi_version: 5.0.7
 
     runs-on: ${{ matrix.os }}
@@ -253,6 +247,10 @@ jobs:
           ${ECLAND_TOOLS}/install-netcdf-fortran.sh --prefix ${{ env.DEPS_DIR }}/netcdf --netcdf-root ${NETCDF_ROOT} --version 4.6.2
         fi
 
+    - name: Set Intel Classic Fortran compiler flags
+      if: contains(matrix.compiler, 'intel-classic')
+      run: echo "FC_FLAGS_CMAKE=-C ${{ github.workspace }}/.github/cmake-flags-intel-classic.cmake" >> $GITHUB_ENV
+
     - name: Build with CMake
       id: buildcmake
       env:
@@ -287,21 +285,20 @@ jobs:
           -DENABLE_DOUBLE_PRECISION=${{ matrix.prec == 'DP' && 'ON' || 'OFF' }}
 
           ecmwf-ifs/field_api:
-          -G Ninja
           -Dfiat_ROOT=${{ env.DEPS_DIR }}/fiat
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -DENABLE_TESTS=OFF
           -DENABLE_MPI=ON
           -DENABLE_SINGLE_PRECISION=${{ matrix.prec == 'SP' && 'ON' || 'OFF' }}
           -DENABLE_DOUBLE_PRECISION=${{ matrix.prec == 'DP' && 'ON' || 'OFF' }}
-          ${{ matrix.fortran_flags }}
+          ${{ env.FC_FLAGS_CMAKE }}
 
         cmake_options: >-
           -G Ninja
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -DENABLE_SINGLE_PRECISION=${{ matrix.prec == 'SP' && 'ON' || 'OFF' }}
-          ${{ matrix.fortran_flags}}
           ${{ matrix.cmake_options }}
+          ${{ env.FC_FLAGS_CMAKE }}
 
         self_build: true
         self_test: false
