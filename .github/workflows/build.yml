@@ -200,7 +200,8 @@ jobs:
       run: |
         sudo apt update
         sudo apt install intel-hpckit
-        source /opt/intel/oneapi/setvars.sh
+        source /opt/intel/oneapi/2025.3/oneapi-vars.sh
+        source /opt/intel/oneapi/setvars.sh --force
         printenv >> $GITHUB_ENV
         echo "CACHE_SUFFIX=$CC-$($CC -dumpversion)" >> $GITHUB_ENV
 
@@ -262,7 +263,7 @@ jobs:
         save_cache: false
         self_coverage: false
         force_build: true
-        cache_suffix: "${{ matrix.build_type }}-${{matrix.prec}}-${{ env.CACHE_SUFFIX }}"
+        cache_suffix: "${{ matrix.compiler }}-${{ matrix.build_type }}-${{matrix.prec}}-${{ env.CACHE_SUFFIX }}"
         recreate_cache: ${{ !matrix.caching }}
         dependencies: |
           ecmwf/ecbuild@refs/tags/3.13.2
